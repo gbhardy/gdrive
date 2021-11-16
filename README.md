@@ -34,11 +34,7 @@ You will be prompted for a new verification code if the folder does not exist.
 
 ## Compile from source
 ```bash
-go get github.com/sabhiram/go-git-ignore
-go get github.com/soniakeys/graph
-go get -u google.golang.org/api/drive/v3
-go get -u golang.org/x/oauth2/google
-go get github.com/gdrive-org/gdrive
+go get github.com/prasmussen/gdrive
 ```
 The gdrive binary should now be available at `$GOPATH/bin/gdrive`
 
