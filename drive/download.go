@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-
+	"strconv"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
 )
@@ -18,6 +18,7 @@ type DownloadArgs struct {
 	Path      string
 	Force     bool
 	Skip      bool
+	KeepDup  	bool
 	Recursive bool
 	Delete    bool
 	Stdout    bool
@@ -71,6 +72,7 @@ type DownloadQueryArgs struct {
 	Path      string
 	Force     bool
 	Skip      bool
+	KeepDup  bool
 	Recursive bool
 }
 
@@ -90,6 +92,7 @@ func (self *Drive) DownloadQuery(args DownloadQueryArgs) error {
 		Path:     args.Path,
 		Force:    args.Force,
 		Skip:     args.Skip,
+		KeepDup : args.KeepDup,
 	}
 
 	for _, f := range files {
@@ -152,6 +155,7 @@ func (self *Drive) downloadBinary(f *drive.File, args DownloadArgs) (int64, int6
 		fpath:         fpath,
 		force:         args.Force,
 		skip:          args.Skip,
+		keepDup:			 args.KeepDup,
 		stdout:        args.Stdout,
 		progress:      args.Progress,
 	})
@@ -164,6 +168,7 @@ type saveFileArgs struct {
 	fpath         string
 	force         bool
 	skip          bool
+	keepDup 			bool
 	stdout        bool
 	progress      io.Writer
 }
@@ -179,14 +184,24 @@ func (self *Drive) saveFile(args saveFileArgs) (int64, int64, error) {
 	}
 
 	// Check if file exists to force
-	if !args.skip && !args.force && fileExists(args.fpath) {
-		return 0, 0, fmt.Errorf("File '%s' already exists, use --force to overwrite or --skip to skip", args.fpath)
+	if !args.skip && !args.force && !args.keepDup && fileExists(args.fpath) {
+		return 0, 0, fmt.Errorf("File '%s' already exists, use --force to overwrite, --skip to skip, or --keepDuplicates to keep duplicate files", args.fpath)
 	}
 
-	//Check if file exists to skip
-	if args.skip && fileExists(args.fpath) {
-		fmt.Printf("File '%s' already exists, skipping\n", args.fpath)
-		return 0, 0, nil
+
+	//Check if file exists to skip or keep duplicate
+	if fileExists(args.fpath) {
+		if(args.skip){
+			fmt.Printf("File '%s' already exists, skipping\n", args.fpath)
+			return 0, 0, nil
+		}
+		else if(args.keepDup){
+			duplicateFiles := 1
+			for fileExists(args.fpath + "_duplicate" + strconv.Itoa(duplicateFiles)){
+				++duplicateFiles
+			}
+			args.fpath += "_duplicate" + strconv.Itoa(duplicateFiles);
+		}
 	}
 
 	// Ensure any parent directories exists

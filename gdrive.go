@@ -181,6 +181,12 @@ func main() {
 						Description: "Download directories recursively, documents will be skipped",
 						OmitValue:   true,
 					},
+					cli.BoolFlag{
+						Name: "keepDuplicates",
+						Patterns : []string{"--keepDuplicates"},
+						Description : "Keep duplicate files",
+						OmitValue : true,
+					}
 					cli.StringFlag{
 						Name:        "path",
 						Patterns:    []string{"--path"},
