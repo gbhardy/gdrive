@@ -8,10 +8,9 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-
-	"github.com/prasmussen/gdrive/auth"
-	"github.com/prasmussen/gdrive/cli"
-	"github.com/prasmussen/gdrive/drive"
+	"ghardy/gdrive/auth"
+	"ghardy/gdrive/cli"
+	"ghardy/gdrive/drive"
 )
 
 const ClientId = "367116221053-7n0vf5akeru7on6o2fjinrecpdoe99eg.apps.googleusercontent.com"
@@ -55,7 +54,7 @@ func downloadHandler(ctx cli.Context) {
 		Id:        args.String("fileId"),
 		Force:     args.Bool("force"),
 		Skip:      args.Bool("skip"),
-		KeepDup: 	 args.Bool("keepDuplicates"),
+		KeepDup: 		args.Bool("keepDup"),
 		Path:      args.String("path"),
 		Delete:    args.Bool("delete"),
 		Recursive: args.Bool("recursive"),

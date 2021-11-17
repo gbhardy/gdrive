@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/prasmussen/gdrive/cli"
+	"ghardy/gdrive/cli"
 )
 
 const Name = "gdrive"
@@ -119,6 +119,12 @@ func main() {
 						OmitValue:   true,
 					},
 					cli.BoolFlag{
+						Name: "keepDup",
+						Patterns : []string{"--keepDuplicates"},
+						Description : "Keep duplicate files",
+						OmitValue : true,
+					},
+					cli.BoolFlag{
 						Name:        "recursive",
 						Patterns:    []string{"-r", "--recursive"},
 						Description: "Download directory recursively, documents will be skipped",
@@ -181,12 +187,6 @@ func main() {
 						Description: "Download directories recursively, documents will be skipped",
 						OmitValue:   true,
 					},
-					cli.BoolFlag{
-						Name: "keepDuplicates",
-						Patterns : []string{"--keepDuplicates"},
-						Description : "Keep duplicate files",
-						OmitValue : true,
-					}
 					cli.StringFlag{
 						Name:        "path",
 						Patterns:    []string{"--path"},

@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/prasmussen/gdrive",
+	"ImportPath": "ghardy/gdrive",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v61",
 	"Deps": [
